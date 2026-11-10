@@ -1,0 +1,15 @@
+{
+  "name": "LUJO ÁRABE — Perfumería",
+  "short_name": "LUJO ÁRABE",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fffaf6",
+  "theme_color": "#0e111a",
+  "icons": [
+    {
+      "src": "assets/media-02.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
