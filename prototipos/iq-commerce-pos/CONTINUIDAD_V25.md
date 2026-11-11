@@ -67,3 +67,9 @@ Tres pestañas con explicación visual **«¿Qué controla?»** y una pequeña v
 5. Mantener todos los demás módulos tal como están salvo orden explícita.
 
 **Comandos:** abrir [IQ_COMMERCE_POS_MAESTRO_V25.html](./IQ_COMMERCE_POS_MAESTRO_V25.html) en navegador; al hacer V26 usarlo de fuente y subir otro archivo, no sobrescribir V25.
+
+## Actualización de seguimiento — 2026-11-11
+
+Se realizó una **inspección estática complementaria** del HTML íntegro V25 (sin cambiar su código): el JavaScript embebido no presenta errores de sintaxis; se comprobó la presencia de las tres pestañas, editores, controles de arrastre y persistencia local. No se encontraron `<select>` nativos, diálogos nativos ni campos `type="date"`. Esto **no equivale a una prueba visual o end-to-end**.
+
+Registro: [QA_ESTATICO_V25_2026-11-11.md](./QA_ESTATICO_V25_2026-11-11.md). Sigue pendiente la revisión visual en PC/móvil y la aprobación del usuario. **No generar V26 ni publicar en producción por esta inspección.**
