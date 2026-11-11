@@ -1,5 +1,7 @@
 # IQ Commerce POS — Panel Maestro universal
 
+> **AVANCE ACTUAL — 11 nov 2026: V29 (prototipo).** [HTML V29](./IQ_COMMERCE_POS_MAESTRO_V29.html) · [Continuidad V29](./CONTINUIDAD_V29.md). Se retomó el diseño **V27** intacto para la zona de KPIs, filtros, tarjetas y navegación; se agregaron arriba la **dona de ventas** y el **Producto estrella**. Se retiró el encabezado alto y Apariencia según instrucciones previas. Meta semanal $10,000 **ilustrativa**, no real. V25–V28 preservadas. **No publicada en producción.**
+
 > **AVANCE ACTUAL — 11 nov 2026: V28 (prototipo).** [Abrir V28](./IQ_COMMERCE_POS_MAESTRO_V28.html) · [Continuidad V28](./CONTINUIDAD_V28.md). Inicio con cabecera compacta, 3 indicadores, dona de ventas semanales y filtros de período; se elimina Apariencia. Conserva las demás pantallas V27 y no modifica producción. **La meta semanal por defecto es solo ilustrativa.**
 
 > **AVANCE ACTUAL — 11 nov 2026: V27 (prototipo).** [Descargar V27](./IQ_COMMERCE_POS_MAESTRO_V27.html) · [Continuidad V27](./CONTINUIDAD_V27.md). En móvil, **Contenido** se muestra directamente en la barra inferior y **Ajustes** en el encabezado; se retiró «Más módulos». Cupones y el resto del diseño se conservaron. V26/V25 intactas. **No desplegada en producción.**
