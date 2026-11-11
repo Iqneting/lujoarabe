@@ -1,5 +1,7 @@
 # IQ Commerce POS — Panel Maestro universal
 
+> **AVANCE ACTUAL — V32 (11 nov 2026).** [HTML autónomo V32](./IQ_COMMERCE_POS_MAESTRO_V32.html) · [Continuidad V32](./CONTINUIDAD_V32.md). Único cambio desde V31: retirar la tarjeta «Apariencia» de los accesos rápidos de Inicio, dejando 8 módulos visibles. Gráfica, filtros, navegación y demás pantallas intactos. **Prototipo; no desplegado en producción.**
+
 > **AVANCE ACTUAL — 11 nov 2026: V31 (prototipo).** [HTML V31](./IQ_COMMERCE_POS_MAESTRO_V31.html) · [Continuidad V31](./CONTINUIDAD_V31.md). Se retiraron exclusivamente las tres tarjetas KPI grandes duplicadas de Inicio; permanecen indicadores compactos, gráfica circular, filtros y el resto del panel V30. Versiones anteriores conservadas. **No desplegada en producción.**
 
 > **AVANCE ACTUAL — 11 nov 2026: V30 (prototipo).** [HTML V30](./IQ_COMMERCE_POS_MAESTRO_V30.html) · [Continuidad V30](./CONTINUIDAD_V30.md). Basado **directamente en V27**: solo se sustituyó el encabezado de Inicio por tarjetas compactas y una gráfica circular; **todos los indicadores originales grandes, filtros, módulos y navegación permanecen tal cual**. No se incluye Producto estrella. Meta semanal de ejemplo debidamente etiquetada. Sin cambios en producción.
