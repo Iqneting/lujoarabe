@@ -44,7 +44,7 @@ Tres pestañas con explicación visual **«¿Qué controla?»** y una pequeña v
 - Datos simulados: localStorage `iqcommerce_maestro_fiel_v1`. Ningún backend ni tienda pública conectados. Las vistas previas son aproximadas y están etiquetadas como demo.
 - Código V25 contiene funciones `iq25*`, `contentPage`, `contentEditor`, `contentEditorRender`, `iq25SaveContent` y eventos de Pointer Events. Modificación acotada a las acciones `content-*` del módulo y CSS `.iq25-*`.
 - Al subir la imagen del banner se conserva el borrador y aparece vista previa inmediata. No se guardan claves Stripe/SMTP en localStorage (regla V24).
-- Validación realizada al generar: `node --check` sin errores. **La prueba automatizada visual/funcional de navegador no pudo ejecutarse por la política del navegador de este entorno (ERR_BLOCKED_BY_ADMINISTRATOR).** No declarar validación visual final hasta probar en Chrome/Android y Windows.
+- Validación realizada al generar: `node --check` sin errores y **14 pruebas de humo de lógica superadas** (tabs, orden 01, selección de productos, guardado de carrusel, validación de banner, video por YouTube y control de URL segura). **La prueba automatizada visual/funcional de navegador no pudo ejecutarse por la política del navegador de este entorno (ERR_BLOCKED_BY_ADMINISTRATOR).** No declarar validación visual final hasta probar en Chrome/Android y Windows.
 - Los contenidos se reordenan solo en su categoría, no mezclados entre Banner, Video y Carrusel.
 - El editor Video admite solamente URLs externas HTTPS de YouTube/Vimeo; no permitir iframe arbitrario.
 
