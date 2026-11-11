@@ -38,3 +38,10 @@
 - Al actualizar el estado de un pedido, la lista y el modal se derivan del mismo registro; no hay un segundo cálculo de avance.
 - Un pedido cancelado mantiene sus cinco etapas visuales inactivas y conserva su etiqueta Cancelado; no debe representarse como entregado.
 - En móvil, cinco etapas deben caber sin scroll horizontal ni textos encimados; no alterar el resto de la tarjeta universal V10 ni el modal V11.
+
+## 6. Editor de productos universal (V13)
+- En Crear/Editar producto elegir **explícitamente** una categoría: tarjetas con iconos y color discreto, categoría asignada resaltada y «Ver todas» abre un selector interno visual. No usar `<select>` nativo.
+- Productos nuevos sin categoría predeterminada ni imágenes de perfumes cargadas automáticamente; son necesarios nombre, precio válido, categoría y al menos una fotografía antes de guardar.
+- Mostrar por separado acciones claras «Subir fotografías» y «Carrusel de imágenes». El carrusel permite seleccionar, ordenar y quitar fotos, y muestra la imagen principal. No duplicar botones equivalentes.
+- Formularios móviles compactos: menos scroll; descripción opcional plegable, visibilidad mediante switches, controles de stock visuales, botones al final y sin scroll horizontal.
+- Funcionalidad preservada en PC/móvil. No sustituir la maqueta o tienda pública ni cambiar otros módulos sin autorización.
