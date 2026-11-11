@@ -997,7 +997,8 @@
 .iq-editor-v14 .iq-gallery-layout { grid-template-columns:minmax(0,.93fr) minmax(0,1.07fr); }
 .iq-editor-v14 .iq-photo-actions button { box-shadow:inset 0 -3px 0 #cbdafa; }
 .iq-editor-v14 .iq-category-tile.selected {border-color:#0560fa;background:#e9f2ff}
-.iq-editor-v14 .iq-category-icon svg {width:100%;height:100%;max-width:40px;max-height:40px}.iq-editor-v14 .field textarea#product-desc {border-radius:14px;min-height:145px;max-height:320px}
+.iq-editor-v14 .iq-category-icon svg {width:100%;height:100%;max-width:40px;max-height:40px}
+.iq-editor-v14 .field textarea#product-desc {border-radius:14px;min-height:145px;max-height:320px}
 .iq-editor-v14 .iq-editor-actions .iq-save-v14 {background:#05a334;border-color:#05a334;color:white;box-shadow:inset 0 -3px 0 #087b2b}
 .iq-editor-v14 .iq-editor-actions .iq-cancel-v14 {box-shadow:inset 0 -2px 0 #f5b8c9}
 .iq-editor-v14 .iq-editor-actions .iq-preview {box-shadow:inset 0 -2px 0 #cbd9f3}
@@ -1996,7 +1997,8 @@ function editor(){
     <div class="iq-v14-tail"><div class="field"><label>${ic('box',18)} Stock</label><div class="stepper"><button type="button" data-action="stock-minus" aria-label="Quitar unidad">−</button><strong id="stock-label">${Number(draft.stock)||0}</strong><button type="button" data-action="stock-plus" aria-label="Agregar unidad">+</button></div></div><div class="field iq-product-toggles"><label>Estado del producto</label><div class="editor-toggles"><button type="button" class="togglelabel ${draft.active?'on':''}" data-action="toggle-active" role="switch" aria-checked="${!!draft.active}"><span class="switch ${draft.active?'on':''}"></span>${draft.active?'Activo':'Inactivo'}</button><button type="button" class="togglelabel secondary" data-action="toggle-featured" role="switch" aria-checked="${!!draft.featured}"><span class="switch ${draft.featured?'on':''}"></span>Destacado</button></div></div></div>
   </div>
   <div class="editor-actions iq-editor-actions"><button class="btn iq-preview" data-action="editor-preview">${ic('eye')} Vista previa</button><div class="end"><button class="btn iq-cancel-v14" data-action="editor-cancel">${ic('x')} Cancelar</button><button class="btn green iq-save-v14" data-action="editor-save">${ic('check')} ${editing?'Guardar cambios':'Guardar producto'}</button></div></div>
- </section></div>`;}
+ </section></div>`;
+}
 function pricePreviewMarkup(){
  const current=Number($('#product-price')?.value??draft?.price)||0;
  const before=Number($('#product-old-price')?.value??draft?.oldPrice)||0;
