@@ -1,5 +1,7 @@
 # IQ Commerce POS — Panel Maestro universal
 
+> **AVANCE ACTUAL — 11 nov 2026: V27 (prototipo).** [Descargar V27](./IQ_COMMERCE_POS_MAESTRO_V27.html) · [Continuidad V27](./CONTINUIDAD_V27.md). En móvil, **Contenido** se muestra directamente en la barra inferior y **Ajustes** en el encabezado; se retiró «Más módulos». Cupones y el resto del diseño se conservaron. V26/V25 intactas. **No desplegada en producción.**
+
 > **AVANCE ACTUAL — 11 nov 2026: V26 (prototipo).** [Descargar V26](./IQ_COMMERCE_POS_MAESTRO_V26.html) · [Continuidad V26](./CONTINUIDAD_V26.md). Animación visible de Drag & Drop, tarjeta flotante que sigue el dedo/mouse, hueco azul punteado, recolocación suave y desplazamiento automático en móvil. **V25 intacta. No publicada en producción.**
 
 > **AVANCE ACTUAL — 11 nov 2026: V25 (prototipo)**. [Abrir maqueta autónoma V25](./IQ_COMMERCE_POS_MAESTRO_V25.html) · [Leer continuidad para siguiente hilo](./CONTINUIDAD_V25.md) · [Reglas de Contenido visual](./REGLAS_CONTENIDO_V25.md). Implementa Banners/Slider, Videos y Carruseles explicados visualmente, y ordenamiento Drag & Drop con 01 destacado. **No está desplegada en producción; validación de navegador pendiente.**
