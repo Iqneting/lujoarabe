@@ -1,5 +1,8 @@
 # IQ Commerce POS — Panel Maestro universal
 
+> **AVANCE ACTUAL — 11 nov 2026: V25 (prototipo)**. [Abrir maqueta autónoma V25](./IQ_COMMERCE_POS_MAESTRO_V25.html) · [Leer continuidad para siguiente hilo](./CONTINUIDAD_V25.md) · [Reglas de Contenido visual](./REGLAS_CONTENIDO_V25.md). Implementa Banners/Slider, Videos y Carruseles explicados visualmente, y ordenamiento Drag & Drop con 01 destacado. **No está desplegada en producción; validación de navegador pendiente.**
+
+
 **Estado al 11 de noviembre de 2026:** versión autónoma **V13** con editor de productos optimizado (V10–V12 conservadas). Desarrollo visual iterativo; **no publicada en producción**.
 
 ## Archivos
