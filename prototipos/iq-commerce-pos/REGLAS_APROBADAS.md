@@ -31,3 +31,10 @@
 - Mantener la tienda LUJO ÁRABE y su rama principal intactas hasta decidir integración.
 - Esta V10 es una **maqueta local**, no backend seguro ni producción. Servicios externos pueden simularse de forma explícita, preparados para integrarse más adelante.
 - Documento y maqueta independientes del producto comercial específico: el objetivo es poder utilizar el panel en otras tiendas de IQneting.
+
+## 5. Un solo seguimiento para pedidos (V12)
+- Tanto la tarjeta externa de Pedidos como el detalle interno muestran **exactamente cinco etapas**: **Pedido → Pago → Preparación → Envío → Entrega**.
+- Los cinco nombres, iconos y estados (completado/actual/pendiente) provienen de la **misma función** de progreso, con idénticos colores: completado verde, actual azul y pendiente gris.
+- Al actualizar el estado de un pedido, la lista y el modal se derivan del mismo registro; no hay un segundo cálculo de avance.
+- Un pedido cancelado mantiene sus cinco etapas visuales inactivas y conserva su etiqueta Cancelado; no debe representarse como entregado.
+- En móvil, cinco etapas deben caber sin scroll horizontal ni textos encimados; no alterar el resto de la tarjeta universal V10 ni el modal V11.
