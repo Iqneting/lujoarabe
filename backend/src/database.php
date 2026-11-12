@@ -9,6 +9,14 @@ declare(strict_types=1);
 function iqDatabase(): PDO
 {
     $file = getenv('IQ_APP_CONFIG') ?: '';
+    // Archivo generado por instalador web, SIEMPRE fuera de la raíz HTTP.
+    // IQ_APP_CONFIG explícita conserva prioridad en CLI y entornos técnicos.
+    if ($file === '' && PHP_SAPI !== 'cli') {
+        $root = realpath((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''));
+        if ($root !== false && $root !== DIRECTORY_SEPARATOR) {
+            $file = dirname($root) . '/iqcommerce-private/iqcommerce-config.php';
+        }
+    }
     if ($file === '' || !str_starts_with($file, '/') || !is_readable($file)) {
         throw new RuntimeException('Missing private application config');
     }
