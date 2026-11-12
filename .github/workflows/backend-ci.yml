@@ -76,4 +76,21 @@ jobs:
           php database/migrate.php "$IQ_APP_CONFIG"
           php database/migrate.php "$IQ_APP_CONFIG"
           php database/verify.php "$IQ_APP_CONFIG"
-          rm -f "$IQ_APP_CONFIG"
+
+          # API en servidor PHP LOCAL del runner: jamás conecta Hostinger.
+          php -S 127.0.0.1:18080 backend/public/api/index.php > /tmp/iqcommerce-api-ci.log 2>&1 &
+          api_pid=$!
+          trap 'kill "$api_pid" 2>/dev/null || true; rm -f "$IQ_APP_CONFIG"' EXIT
+          sleep 1
+
+          curl -fsS http://127.0.0.1:18080/api/v1/health \
+            | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["ok"] and d["schema"]=="001_initial"; print("health OK")'
+          curl -fsS http://127.0.0.1:18080/api/v1/store/config \
+            | python3 -c 'import json,sys; d=json.load(sys.stdin)["data"]; assert d["iva_rate"]=="16.00" and d["iva_enabled"] is False; print("IVA API OK")'
+          curl -fsS http://127.0.0.1:18080/api/v1/catalog/categories \
+            | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["data"]==[]; print("categories API OK")'
+          curl -fsS http://127.0.0.1:18080/api/v1/catalog/products?limit=12 \
+            | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["data"]==[] and d["pagination"]["limit"]==12; print("products API OK")'
+          test "$(curl -s -o /dev/null -w '%{http_code}' 'http://127.0.0.1:18080/api/v1/catalog/products?category_id=oops')" = "422"
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST 'http://127.0.0.1:18080/api/v1/catalog/products')" = "405"
+          echo "HTTP smoke QA OK — solamente lectura"
