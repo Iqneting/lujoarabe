@@ -1,5 +1,7 @@
 # Backend inicial — IQ Commerce POS
 
+> **Esquema V41:** 001 + 002, 38 tablas y 44 FKs verificadas en [GitHub Actions](https://github.com/Iqneting/lujoarabe/actions/runs/43147469343). La API sigue siendo de SOLO LECTURA y ninguna operación administrativa se ha integrado aún a PHP. Ver [Auditoría local V41](../docs/AUDITORIA_INTEGRACION_LOCAL_V41.md).
+
 PHP 8.2+, PDO MariaDB 10.6+. SOLO LECTURA por ahora. Sin checkout ni cambios reales.
 
 ## Estructura
