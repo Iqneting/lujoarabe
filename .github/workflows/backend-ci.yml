@@ -61,7 +61,7 @@ jobs:
 
       - name: Aplicar migración en MariaDB temporal y comprobar
         env:
-          IQ_APP_CONFIG: \${{ runner.temp }}/iqcommerce-ci-config.php
+          IQ_APP_CONFIG: ${{ runner.temp }}/iqcommerce-ci-config.php
         run: |
           cat > "$IQ_APP_CONFIG" <<'PHP'
           <?php
