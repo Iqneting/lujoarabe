@@ -1,5 +1,7 @@
 # IQ Commerce POS — Panel Maestro universal
 
+> **ÚLTIMO AVANCE — V38 (11 nov 2026).** [HTML V38](./IQ_COMMERCE_POS_MAESTRO_V38.html) · [Continuidad V38](./CONTINUIDAD_V38.md) · [ZIP Android](https://github.com/Iqneting/lujoarabe/archive/refs/heads/descarga-v38.zip). Se añade «Iniciar devolución» desde **Pedidos → Ver pedido → Productos**, con pedido preseleccionado y selección posterior del producto; el atajo por producto permanece. V37 y todas las anteriores intactas. **Solo prototipo; no producción.**
+
 > **AVANCE ACTUAL — V32 (11 nov 2026).** [HTML autónomo V32](./IQ_COMMERCE_POS_MAESTRO_V32.html) · [Continuidad V32](./CONTINUIDAD_V32.md). Único cambio desde V31: retirar la tarjeta «Apariencia» de los accesos rápidos de Inicio, dejando 8 módulos visibles. Gráfica, filtros, navegación y demás pantallas intactos. **Prototipo; no desplegado en producción.**
 
 > **AVANCE ACTUAL — 11 nov 2026: V31 (prototipo).** [HTML V31](./IQ_COMMERCE_POS_MAESTRO_V31.html) · [Continuidad V31](./CONTINUIDAD_V31.md). Se retiraron exclusivamente las tres tarjetas KPI grandes duplicadas de Inicio; permanecen indicadores compactos, gráfica circular, filtros y el resto del panel V30. Versiones anteriores conservadas. **No desplegada en producción.**
