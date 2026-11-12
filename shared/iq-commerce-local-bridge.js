@@ -70,6 +70,7 @@ function audit(d){
   if(o.payment==='paid'&&['pending','review'].includes(o.status))problems.push('Pago confirmado en estado de espera: '+o.id);
  }
  for(const r of d.returns){
+  if(r.status==='closed'&&r.needsSettlement)problems.push('Devolución cerrada sin liquidación registrada: '+r.id);
   if(r.legacy)continue;
   const o=d.orders.find(x=>x.id===r.orderId);
   if(!o)problems.push('Devolución sin pedido: '+r.id);
@@ -204,6 +205,8 @@ function confirmPayment(d,id){
  o.payment='paid';o.status='preparing';
  o.history=[...(o.history||[]),{at:new Date().toISOString(),status:o.status}];
  d.payments.push({id:uid('PAY'),orderId:id,amount:o.total,method:o.paymentMethod||'transferencia',status:'verified',at:new Date().toISOString(),demo:true});
+ d.couponRedemptions.filter(x=>x.orderId===id&&x.status==='held').forEach(x=>x.status='committed');
+ if(o.couponCode)d.storeCredits.filter(x=>x.code===o.couponCode).forEach(x=>{x.remaining=0;x.status='consumed_demo'});
  return o;
 }
 function cancelOrder(d,id){
@@ -215,6 +218,7 @@ function cancelOrder(d,id){
   const coupon=d.coupons.find(x=>x.id===o.couponId);
   if(coupon)coupon.used=Math.max(0,Number(coupon.used||0)-1);
   d.couponRedemptions.filter(x=>x.orderId===id&&x.status==='held').forEach(x=>x.status='released');
+  if(o.couponCode)d.storeCredits.filter(x=>x.code===o.couponCode&&x.status!=='consumed_demo').forEach(x=>{x.status='available';x.remaining=x.amount});
   o.couponReleased=true;
  }
  o.status='cancelled';o.refundRequired=o.payment==='paid';
@@ -280,10 +284,46 @@ function returnNext(d,id,next){
  const r=d.returns.find(x=>x.id===id);if(!r)fail('Devolución no encontrada');
  const stages={requested:'review',review:'received',received:'resolved',resolved:'closed'};
  if(next!==stages[r.status]&&!(next==='rejected'&&['requested','review','received'].includes(r.status)))fail('La transición de devolución no es válida');
+ if(next==='closed'&&r.needsSettlement)fail('Primero documenta el cumplimiento de la resolución');
+ if(next==='resolved'){
+  if(!['refund','exchange','credit','store_credit'].includes(r.resolution))fail('Selecciona resolución válida');
+  const amount=Number(r.amount)||0;
+  if(amount<=0)fail('Importe no válido de devolución');
+  if(r.resolution==='credit'||r.resolution==='store_credit'){
+   const code=uid('DEV').replace(/-/g,'').slice(0,20);
+   const couponId=uid('CU');
+   d.storeCredits.push({id:uid('SC'),returnId:r.id,code,amount,remaining:amount,status:'available'});
+   d.coupons.push({id:couponId,code,percent:0,credit:amount,active:true,
+    from:new Date().toISOString().slice(0,10),to:'2099-12-31',limit:1,used:0});
+   r.creditCode=code;r.settlementStatus='credit_issued';r.needsSettlement=false;
+  }else if(r.resolution==='refund'){
+   d.refunds.push({id:uid('REF'),returnId:r.id,orderId:r.orderId,amount,status:'pending_manual',createdAt:new Date().toISOString(),demo:true});
+   r.settlementStatus='pending_manual';r.needsSettlement=true;
+  }else{
+   d.exchanges.push({id:uid('EX'),returnId:r.id,orderId:r.orderId,productId:r.productId,qty:r.qty,status:'pending_fulfillment',demo:true});
+   r.settlementStatus='pending_fulfillment';r.needsSettlement=true;
+  }
+ }
  r.status=next;r.updatedAt=new Date().toISOString();r.history=[...(r.history||[]),{state:next,at:r.updatedAt}];
- if(next==='resolved')r.needsSettlement=true; // ningún reembolso bancario/vale se ejecuta aquí
+ return r;
+}
+function recordSettlement(d,id){
+ const r=d.returns.find(x=>x.id===id);
+ if(!r||r.status!=='resolved'||!r.needsSettlement)fail('La resolución no tiene un cumplimiento pendiente');
+ if(r.resolution==='refund'){
+  const refund=d.refunds.find(x=>x.returnId===id&&x.status==='pending_manual');
+  if(!refund)fail('No se encontró la solicitud de reembolso');
+  refund.status='manual_demo_recorded';refund.confirmedAt=new Date().toISOString();
+ }else if(r.resolution==='exchange'){
+  const exchange=d.exchanges.find(x=>x.returnId===id&&x.status==='pending_fulfillment');
+  if(!exchange)fail('No se encontró el cambio pendiente');
+  exchange.status='fulfilled_demo';exchange.confirmedAt=new Date().toISOString();
+ }else fail('La emisión de crédito no requiere esta acción');
+ r.needsSettlement=false;r.settlementStatus='confirmed_demo';
+ r.updatedAt=new Date().toISOString();
+ r.history=[...(r.history||[]),{state:'settlement_demo_recorded',at:r.updatedAt}];
  return r;
 }
 root.IQCommerceDemo={KEY,boot,get,commit,tx,audit,available,priceItems,quoteOrder,createOrder,confirmPayment,
- cancelOrder,shipOrder,deliverOrder,rejectPayment,adjustStock,deleteOrder,createReturn,returnNext,uid};
+ cancelOrder,shipOrder,deliverOrder,rejectPayment,adjustStock,deleteOrder,createReturn,returnNext,recordSettlement,uid};
 })(typeof window!=='undefined'?window:globalThis);
