@@ -15,15 +15,15 @@ function makeFallback(){
  }));
  return {products,categories:[{id:'c1',name:'Perfumes',active:true},{id:'c2',name:'Sets',active:true}],
  orders:[],returns:[],customers:[],coupons:[],content:[],tax:{ivaEnabled:false,ivaRate:16},
- store:{name:'Lujo Árabe'},shipping:{standard:99,freeFrom:1500,carriers:['Paquetería nacional']}};
+ store:{name:'Lujo Árabe'},shipping:{standard:99,freeFrom:1500,carriers:['Paquetería nacional']},catalogImportedV41:true};
 }
 IQ_DEMO.boot(makeFallback());
 function addMissingCatalog(){
  const current=IQ_DEMO.get();
+ if(current.catalogImportedV41)return;
  const known=new Set(current.products.map(p=>String(p.name||'').trim().toLowerCase()));
  const extra=makeFallback().products.filter(p=>!known.has(p.name.trim().toLowerCase())&&!current.products.some(x=>x.id===p.id));
- if(!extra.length)return;
- try{IQ_DEMO.tx(d=>{d.products.push(...extra);if(!d.categories.length)d.categories=makeFallback().categories})}
+ try{IQ_DEMO.tx(d=>{d.products.push(...extra);d.catalogImportedV41=true;if(!d.categories.length)d.categories=makeFallback().categories})}
  catch(e){console.warn('No se pudo ampliar catálogo de demostración:',e.message)}
 }
 addMissingCatalog();
