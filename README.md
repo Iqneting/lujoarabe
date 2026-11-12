@@ -1,5 +1,7 @@
 # LUJO ÁRABE · Maqueta HTML V1
 
+> **BASE DE DATOS / API EN PREPARACIÓN (11 nov 2026).** El nuevo modelo MariaDB de 35 tablas está en [database/migrations/001_initial.sql](database/migrations/001_initial.sql). [Arquitectura](docs/ARQUITECTURA_MARIADB_V1.md) · [Contratos de API](docs/CONTRATOS_API_V1.md) · [Instalación segura](database/README.md) · [Backend PHP de consulta](backend/README.md). **Todavía no hay conexión a Hostinger ni checkout real.** Se conserva V40, la tienda pública y main sin sustituirlos.
+
 **Rama de desarrollo:** `lujoarabe` · **Estado:** maqueta interactiva, no producción.
 
 Diseño de IQneting basado en la maqueta aprobada. Escritorio y móvil con apariencia de app nativa, navegación de categorías, carrusel, 20 productos del Excel, búsqueda, filtros, selección de producto, carrito flotante, checkout simulado, confirmaciones Motion y visualización administrativa.
