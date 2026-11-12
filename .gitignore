@@ -5,4 +5,11 @@ node_modules/
 .DS_Store
 *.log
 *.sql
+# Versionar SOLO migraciones declarativas; no respaldos/dumps.
+!database/migrations/
+!database/migrations/*.sql
 backups/
+# No versionar credenciales ni archivos privados del servidor.
+**/config.local.php
+**/config.production.php
+private/
