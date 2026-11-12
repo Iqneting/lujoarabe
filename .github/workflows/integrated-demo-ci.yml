@@ -1,0 +1,41 @@
+name: IQ Commerce - integración local V41
+on:
+  push:
+    branches: [lujoarabe]
+    paths:
+      - "shared/**"
+      - "tienda-integrada/**"
+      - "tests/**"
+      - "prototipos/iq-commerce-pos/IQ_COMMERCE_POS_MAESTRO_V41.html"
+      - ".github/workflows/integrated-demo-ci.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-integrity:
+    name: Dominio + navegador Chromium
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validación estática de JavaScript y dominio
+        run: |
+          node --check shared/iq-commerce-local-bridge.js
+          node --check tienda-integrada/app.js
+          node --check tests/local-domain.test.cjs
+          node --check tests/integrated-demo.e2e.cjs
+          node tests/local-domain.test.cjs
+      - name: Preparar navegador de pruebas
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Probar flujo tienda-panel completo bajo un mismo origen HTTP
+        run: |
+          python3 -m http.server 18765 --bind 127.0.0.1 > /tmp/iq41-http.log 2>&1 &
+          python_pid=$!
+          trap 'kill "$python_pid" 2>/dev/null || true' EXIT
+          sleep 1
+          node tests/integrated-demo.e2e.cjs
