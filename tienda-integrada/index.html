@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<base href="/">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>INTEGRACIÓN LOCAL · LUJO ÁRABE | Perfumería árabe, decants y sets exclusivos</title>
+  <meta name="description" content="Explora LUJO ÁRABE: una experiencia de perfumería con fragancias árabes, colecciones especiales y presentación visual premium. Descubre tu aroma ideal.">
+  <meta name="keywords" content="perfumes árabes, perfumería árabe, Lattafa, Armaf, Rasasi, decants, perfumes de diseñador, sets de perfumes, México">
+  <meta name="robots" content="noindex,nofollow"><!-- Versión de muestra: cambiar a index,follow al publicar la tienda real -->
+  <meta name="theme-color" content="#0e111a">
+  <meta name="color-scheme" content="light">
+  <meta name="author" content="LUJO ÁRABE">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="LUJO ÁRABE">
+  <meta property="og:title" content="LUJO ÁRABE · Aromas que enamoran">
+  <meta property="og:description" content="Descubre una nueva forma de explorar fragancias, decants y colecciones en LUJO ÁRABE.">
+  <meta property="og:image" content="assets/media-01.jpg"><!-- En producción usar URL HTTPS absoluta real -->
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LUJO ÁRABE, aromas que enamoran, perfumería premium">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LUJO ÁRABE · Aromas que enamoran">
+  <meta name="twitter:description" content="Perfumería árabe, decants y sets en una experiencia visual elegante.">
+  <meta name="twitter:image" content="assets/media-01.jpg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LUJO ÁRABE">
+  <link rel="icon" type="image/png" href="assets/media-02.png">
+  <link rel="apple-touch-icon" href="assets/media-02.png">
+  
+  <link rel="preload" href="assets/media-03.webp" as="image">
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Store","name":"LUJO ÁRABE","description":"Perfumería árabe, decants y sets exclusivos","image":"assets/media-01.jpg","currenciesAccepted":"MXN","priceRange":"$$"}</script>
+</head>
+<body>
+  <div class="mini-bar" aria-label="Navegación informativa"><span>✦ Experiencia de perfumería premium</span><span>✦ Descubre tu próximo aroma</span><span>✦ Compra visual y sencilla</span></div>
+  <header class="header" id="header">
+    <div class="header-row">
+      <div class="head-left">
+        <button class="icon-button" data-action="menu" aria-label="Abrir menú"><span data-icon="menu"></span></button>
+        <button class="icon-button" data-action="search" aria-label="Buscar"><span data-icon="search"></span></button>
+        <button class="header-search" data-action="search" aria-label="Buscar perfumes"><span data-icon="search"></span><span>Buscar fragancias...</span></button>
+      </div>
+      <a href="#/inicio" data-nav="inicio" aria-label="Ir a inicio"><img src="assets/media-04.png" alt="LUJO ÁRABE" class="logo"></a>
+      <div class="head-right">
+        <button class="icon-button" data-action="openFavorites" aria-label="Favoritos"><span data-icon="heart"></span><span class="counter" id="fav-count" hidden>0</span></button>
+        <button class="icon-button" data-nav="cuenta" aria-label="Mi cuenta"><span data-icon="user"></span></button>
+        <button class="icon-button" data-action="cart" aria-label="Abrir carrito"><span data-icon="shopping-bag"></span><span class="counter" id="cart-count-head" hidden>0</span></button>
+      </div>
+    </div>
+    <nav class="header-nav" aria-label="Menú principal">
+      <button data-nav="inicio" class="active">Inicio</button><button data-nav="catalogo">Perfumes</button><button data-nav="decants">Decants</button><button data-nav="sets">Sets</button><button data-nav="ofertas">Promociones</button>
+    </nav>
+  </header>
+  <main id="app" role="main"></main>
+  <footer class="footer"><div class="shell"><div class="footer-grid">
+    <div><img class="footer-brand" src="assets/media-04.png" alt="LUJO ÁRABE"><p>Una nueva experiencia para descubrir aromas memorables. Diseño conceptual de comercio electrónico.</p></div>
+    <div><h4>EXPLORA</h4><button data-nav="catalogo">Todos los perfumes</button><button data-nav="decants">Decants</button><button data-nav="sets">Sets exclusivos</button><button data-nav="ofertas">Promociones</button></div>
+    <div><h4>TU EXPERIENCIA</h4><button data-nav="cuenta">Mi cuenta y pedidos</button><button data-action="cart">Mi carrito</button><button data-nav="admin">Panel administrativo · vista previa</button><button data-action="search">Buscar un aroma</button></div>
+  </div><div class="footer-bottom">© 2026 LUJO ÁRABE · Prototipo visual de IQneting · Compras, pagos, envíos y videos simulados; aún no conecta a servicios reales.</div></div></footer>
+  <button class="float-cart" id="floating-cart" data-action="cart" aria-label="Carrito flotante"><span data-icon="shopping-cart"></span><span class="counter" id="cart-count-float" hidden>0</span></button>
+  <nav class="mobile-tabs" aria-label="Navegación móvil">
+    <button class="mobile-tab active" data-nav="inicio"><span data-icon="house"></span>Inicio</button>
+    <button class="mobile-tab" data-nav="catalogo"><span data-icon="grid"></span>Perfumes</button>
+    <button class="mobile-tab" data-nav="videos"><span data-icon="play-square"></span>Videos</button>
+    <button class="mobile-tab" data-nav="ofertas"><span data-icon="tag"></span>Promos</button>
+    <button class="mobile-tab" data-nav="cuenta"><span data-icon="user"></span>Más</button>
+  </nav>
+  <div id="portal"></div>
+  <script id="product-seed" type="application/json">[
+  {
+    "id": 1,
+    "nombre": "Asad Elixir",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "caballero",
+    "categoria": "arabes",
+    "precio": 1000,
+    "foto": "assets/media-05.webp",
+    "notas": "Amaderado · intenso",
+    "badge": "Favorito",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 2,
+    "nombre": "Khamrah Dukhan",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "unisex",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-06.webp",
+    "notas": "Especiado · cálido",
+    "badge": "Nuevo",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 3,
+    "nombre": "Yara Moi",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "dama",
+    "categoria": "arabes",
+    "precio": 879,
+    "foto": "assets/media-07.webp",
+    "notas": "Floral · delicado",
+    "badge": "Descubre",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 4,
+    "nombre": "Yara Elixir",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "dama",
+    "categoria": "arabes",
+    "precio": 1000,
+    "foto": "assets/media-08.webp",
+    "notas": "Dulce · envolvente",
+    "badge": "Top ventas",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 5,
+    "nombre": "Ana Abiyedh Rouge",
+    "marca": "Lattafa",
+    "presentacion": "60 ml",
+    "tipo": "EDP",
+    "genero": "unisex",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-09.webp",
+    "notas": "Ámbar · sofisticado",
+    "badge": "Especial",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 6,
+    "nombre": "Hawas For Him",
+    "marca": "Rasasi",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "caballero",
+    "categoria": "arabes",
+    "precio": 900,
+    "foto": "assets/media-10.webp",
+    "notas": "Fresco · magnético",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 7,
+    "nombre": "Club de Nuit Intense Man",
+    "marca": "Armaf",
+    "presentacion": "200 ml",
+    "tipo": "EDP",
+    "genero": "caballero",
+    "categoria": "arabes",
+    "precio": 1200,
+    "foto": "assets/media-11.webp",
+    "notas": "Intenso · elegante",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 8,
+    "nombre": "Ameer al Oudh Intense Oud",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "unisex",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-12.webp",
+    "notas": "Oud · profundo",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 9,
+    "nombre": "Nebras",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "unisex",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-13.webp",
+    "notas": "Gourmand · seductor",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 10,
+    "nombre": "Fakhar Gold",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "unisex",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-14.webp",
+    "notas": "Oriental · distinguido",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 11,
+    "nombre": "Liam Blue Shine",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "caballero",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-15.svg",
+    "notas": "Acuático · fresco",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 12,
+    "nombre": "Versace Bright Crystal",
+    "marca": "Versace",
+    "presentacion": "100 ml",
+    "tipo": "EDT",
+    "genero": "dama",
+    "categoria": "disenador",
+    "precio": 1300,
+    "foto": "assets/media-16.svg",
+    "notas": "Floral · luminoso",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 13,
+    "nombre": "Club de Nuit Precieux",
+    "marca": "Armaf",
+    "presentacion": "55 ml",
+    "tipo": "EDP",
+    "genero": "caballero",
+    "categoria": "arabes",
+    "precio": 1100,
+    "foto": "assets/media-17.svg",
+    "notas": "Amaderado · moderno",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 14,
+    "nombre": "Odyssey Dubai Chocolat",
+    "marca": "Armaf",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "unisex",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-18.svg",
+    "notas": "Dulce · especiado",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 15,
+    "nombre": "Hawas Atlantis",
+    "marca": "Rasasi",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "caballero",
+    "categoria": "arabes",
+    "precio": 1200,
+    "foto": "assets/media-19.svg",
+    "notas": "Marino · vibrante",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 16,
+    "nombre": "Nebras Elixir",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "unisex",
+    "categoria": "arabes",
+    "precio": 950,
+    "foto": "assets/media-20.svg",
+    "notas": "Intenso · cremoso",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 17,
+    "nombre": "Ajwad Pink To Pink",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "dama",
+    "categoria": "arabes",
+    "precio": 860,
+    "foto": "assets/media-21.svg",
+    "notas": "Floral · romántico",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 18,
+    "nombre": "Club de Nuit Imperiale",
+    "marca": "Armaf",
+    "presentacion": "105 ml",
+    "tipo": "EDP",
+    "genero": "dama",
+    "categoria": "arabes",
+    "precio": 950,
+    "foto": "assets/media-22.svg",
+    "notas": "Elegante · floral",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 19,
+    "nombre": "Sauvage",
+    "marca": "Dior",
+    "presentacion": "60 ml",
+    "tipo": "ELIXIR",
+    "genero": "caballero",
+    "categoria": "disenador",
+    "precio": 3350,
+    "foto": "assets/media-23.svg",
+    "notas": "Especiado · magnético",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  },
+  {
+    "id": 20,
+    "nombre": "Yara Candy Gift Box",
+    "marca": "Lattafa",
+    "presentacion": "100 ml",
+    "tipo": "EDP",
+    "genero": "dama",
+    "categoria": "sets",
+    "precio": 965,
+    "foto": "assets/media-24.svg",
+    "notas": "Dulce · regalo",
+    "badge": "",
+    "fotografiaConceptual": true,
+    "origen": "LISTA DE PRODUCTOS BBB.xlsx / Hoja1"
+  }
+]</script>
+  <script>window.__LUJO_ASSETS__={"categoria-arabes.svg":"assets/media-25.svg","fakhar-gold.webp":"assets/media-14.webp","concepto-14.svg":"assets/media-18.svg","logo-letras.png":"assets/media-26.png","concepto-20.svg":"assets/media-24.svg","categoria-dama.svg":"assets/media-27.svg","concepto-15.svg":"assets/media-19.svg","nebras.webp":"assets/media-13.webp","concepto-16.svg":"assets/media-20.svg","hero-3.webp":"assets/media-28.webp","hawas-for-him.webp":"assets/media-10.webp","yara-elixir.webp":"assets/media-08.webp","og-lujo-arabe.jpg":"assets/media-01.jpg","categoria-sets.svg":"assets/media-29.svg","categoria-promociones.svg":"assets/media-30.svg","icon-pwa.png":"assets/media-31.png","ameer-al-oudh.webp":"assets/media-12.webp","concepto-17.svg":"assets/media-21.svg","concepto-13.svg":"assets/media-17.svg","concepto-11.svg":"assets/media-15.svg","lujo-arabe-logo.png":"assets/media-04.png","concepto-18.svg":"assets/media-22.svg","concepto-12.svg":"assets/media-16.svg","categoria-decants.svg":"assets/media-32.svg","club-de-nuit-intense-man.webp":"assets/media-11.webp","ana-abiyedh-rouge.webp":"assets/media-09.webp","asad-elixir.webp":"assets/media-05.webp","khamrah-dukhan.webp":"assets/media-06.webp","concepto-19.svg":"assets/media-23.svg","hero-2.webp":"assets/media-33.webp","logo-simbolo.png":"assets/media-02.png","categoria-caballero.svg":"assets/media-34.svg","hero-1.webp":"assets/media-03.webp","yara-moi.webp":"assets/media-07.webp"};</script>
+<script src="/shared/iq-commerce-local-bridge.js" defer></script>
+<script src="/tienda-integrada/app.js" defer></script>
+</body>
+</html>
