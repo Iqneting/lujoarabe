@@ -2073,6 +2073,11 @@
 .iq40-iva-hint{font-size:11px;line-height:1.5;color:#687997}
 @media(max-width:480px){.modal:has(.iq40-iva-dialog) .modal-content{padding:13px 14px 10px}.modal:has(.iq40-iva-dialog) .modal-foot{padding:12px 14px;gap:7px}.modal:has(.iq40-iva-dialog) .modal-foot .btn{flex:1;min-width:0;padding:10px 9px;font-size:12px}.iq40-iva-hero{padding:12px}.iq40-iva-hero strong{font-size:15px}.iq40-iva-stepper{grid-template-columns:45px minmax(0,1fr) 45px;gap:7px}}
 @media(prefers-reduced-motion:reduce){.iq40-iva-switch,.iq40-iva-switch span{transition:none}}
+/* V41: criterio de cálculo fiscal explícito, sin menú nativo. */
+.iq41-tax-mode{display:grid;gap:8px}.iq41-tax-mode>strong{font-size:14px}.iq41-tax-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.iq41-tax-option{background:#fff;border:1.5px solid #cadbf1;border-radius:13px;padding:12px 8px;color:#26446b;font-weight:800;font-size:12px}
+.iq41-tax-option.selected{background:#edf4ff;border-color:#0b62e7;color:#095ac9}.iq41-tax-mode small{font-size:11px;color:#657891;line-height:1.4}
+@media(max-width:400px){.iq41-tax-option{font-size:11px}}
 /* V41: controles de pedido integrados usando la misma línea visual */
 .iq41-order-form{display:grid;gap:12px}.iq41-order-label{font-size:14px;color:#233d64}
 .iq41-order-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-height:240px;overflow-y:auto;gap:8px}
@@ -3045,16 +3050,16 @@ function bankSettings(){const b=db.bank;return `<div class="center-content">${vi
 /* V40 — Confirma el porcentaje de IVA; 16 % es el valor inicial. No recalcula pedidos. */
 function iq40IVARate(){const r=Number(db.tax?.ivaRate);return Number.isFinite(r)&&r>=0&&r<=100?r:16}
 function iq40IVAOpen(){
- const enabled=db.tax?.ivaEnabled===true,rate=iq40IVARate();
+ const enabled=db.tax?.ivaEnabled===true,rate=iq40IVARate(),mode=db.tax?.ivaPriceMode||'';
  const body=`<div class="iq40-iva-dialog">
   <div class="iq40-iva-hero"><span class="iq40-iva-icon">${ic('percent',30)}</span><div><strong>Impuesto al Valor Agregado</strong><small>Por defecto 16%. Puedes ajustarlo antes de confirmar.</small></div></div>
   <div class="iq40-iva-line"><div><strong>Activar IVA</strong><small>Define si utilizarás este impuesto.</small></div><button type="button" class="iq40-iva-switch ${enabled?'on':''}" role="switch" aria-checked="${enabled}" aria-label="${enabled?'Desactivar':'Activar'} IVA" data-action="iq40-iva-switch"><span aria-hidden="true"></span></button></div>
   <div class="iq40-iva-rate-title"><strong>Porcentaje de IVA</strong><span id="iq40-iva-switch-state">${enabled?'Activado':'Desactivado'}</span></div>
   <div class="iq40-iva-stepper"><button type="button" data-action="iq40-iva-step" data-value="-1" aria-label="Reducir porcentaje en uno">${ic('minus',22)}</button><div class="iq40-iva-rate-input"><input id="iq40-iva-rate" type="text" inputmode="decimal" maxlength="6" value="${rate}" aria-label="Porcentaje de IVA" autocomplete="off" spellcheck="false"><span aria-hidden="true">%</span></div><button type="button" data-action="iq40-iva-step" data-value="1" aria-label="Aumentar porcentaje en uno">${ic('plus',22)}</button></div>
-  <p class="iq40-iva-hint">El porcentaje se guarda para la futura integración fiscal. Esta maqueta no modifica precios ni pedidos.</p>
+  <div class="iq41-tax-mode"><strong>¿Cómo se publican tus precios?</strong><div class="iq41-tax-options"><button type="button" data-action="iq41-iva-mode" data-value="included" aria-pressed="${mode==='included'}" class="iq41-tax-option ${mode==='included'?'selected':''}">Ya incluyen IVA</button><button type="button" data-action="iq41-iva-mode" data-value="added" aria-pressed="${mode==='added'}" class="iq41-tax-option ${mode==='added'?'selected':''}">Agregar IVA al cobrar</button></div><small>Elige una opción antes de activar IVA. Nunca cambia pedidos anteriores.</small></div><p class="iq40-iva-hint">Solo aplica al simulador local de pedidos nuevos. Los cobros y comprobantes fiscales reales requieren backend.</p>
   </div>`;
  const footer=`<button type="button" class="btn soft" data-action="modal-close">Cancelar</button><button type="button" class="btn primary" data-action="iq40-iva-save">${ic('check',19)} Confirmar porcentaje</button>`;
- showModal('Configuración de IVA',body,footer,false,{type:'iq40-iva',ivaEnabled:enabled});
+ showModal('Configuración de IVA',body,footer,false,{type:'iq40-iva',ivaEnabled:enabled,ivaPriceMode:mode});
 }
 function settings(){
  const store=db.store||{name:'Mi tienda'};
@@ -3385,9 +3390,10 @@ switch(action){
  case 'iq33-logout-confirm':return iq33LogoutConfirm();
  case 'iq33-return':return iq33Return();
  case 'iq40-iva-open':return iq40IVAOpen();
+ case 'iq41-iva-mode':{if(modal?.type!=='iq40-iva')return;modal.ivaPriceMode=val;$('.iq41-tax-option').forEach(x=>{const selected=x.dataset.value===val;x.classList.toggle('selected',selected);x.setAttribute('aria-pressed',String(selected))});return}
  case 'iq40-iva-switch':{if(modal?.type!=='iq40-iva')return;modal.ivaEnabled=!modal.ivaEnabled;const btn=$('.iq40-iva-switch');if(btn){btn.classList.toggle('on',modal.ivaEnabled);btn.setAttribute('aria-checked',String(modal.ivaEnabled));btn.setAttribute('aria-label',modal.ivaEnabled?'Desactivar IVA':'Activar IVA')}const txt=$('#iq40-iva-switch-state');if(txt)txt.textContent=modal.ivaEnabled?'Activado':'Desactivado';return}
  case 'iq40-iva-step':{if(modal?.type!=='iq40-iva')return;const input=$('#iq40-iva-rate');if(!input)return;const base=Number(String(input.value).replace(',','.'));const rate=Number.isFinite(base)?base:16;input.value=String(Math.min(100,Math.max(0,Math.round((rate+(Number(val)||0))*100)/100)));return}
- case 'iq40-iva-save':{if(modal?.type!=='iq40-iva')return;const input=$('#iq40-iva-rate');const raw=String(input?.value||'').trim();if(!/^\d{1,3}(?:[.,]\d{1,2})?$/.test(raw))return toast('Ingresa un porcentaje válido de 0 a 100');const rate=Number(raw.replace(',','.'));if(!Number.isFinite(rate)||rate<0||rate>100)return toast('El porcentaje debe estar entre 0 y 100');const old=db.tax;db.tax={...(old||{}),ivaEnabled:modal.ivaEnabled===true,ivaRate:rate};if(!save()){db.tax=old;return}closeModal();render(true);toast('IVA '+(db.tax.ivaEnabled?'activado':'desactivado')+' · '+rate+'% confirmado (demo)');return}
+ case 'iq40-iva-save':{if(modal?.type!=='iq40-iva')return;const input=$('#iq40-iva-rate');const raw=String(input?.value||'').trim();if(!/^\d{1,3}(?:[.,]\d{1,2})?$/.test(raw))return toast('Ingresa un porcentaje válido de 0 a 100');const rate=Number(raw.replace(',','.'));if(!Number.isFinite(rate)||rate<0||rate>100)return toast('El porcentaje debe estar entre 0 y 100');if(modal.ivaEnabled&&!['included','added'].includes(modal.ivaPriceMode))return toast('Elige cómo se publican los precios antes de activar IVA');const old=db.tax;db.tax={...(old||{}),ivaEnabled:modal.ivaEnabled===true,ivaRate:rate,ivaPriceMode:modal.ivaPriceMode||null};if(!save()){db.tax=old;return}closeModal();render(true);toast('IVA '+(db.tax.ivaEnabled?'activado':'desactivado')+' · '+rate+'% confirmado (demo)');return}
  case 'iq24-logo-pick':return $('#iq24-logo-file')?.click();
  case 'iq24-smtp-open':return iq24SMTPModal();
  case 'iq24-stripe-open':return iq24StripeModal();
