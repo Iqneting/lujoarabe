@@ -1,5 +1,17 @@
 # Instalación MariaDB de IQ Commerce POS
 
+> **Esquema actualizado para la integración local V41:** aplicar 001_initial y después 002_commerce_gaps. Resultado probado en MariaDB 10.11: **38 tablas, 44 claves foráneas**. [CI exitoso](https://github.com/Iqneting/lujoarabe/actions/runs/43147469343). La instalación aún no se ejecuta en Hostinger.
+
+Ejecutar en una base NUEVA y vacía (con ruta privada a credenciales), en este orden:
+
+~~~bash
+php database/migrate.php /ruta/privada/config.php
+php database/migrate-002.php /ruta/privada/config.php
+php database/verify-002.php /ruta/privada/config.php
+~~~
+
+No eliminar ni repetir a ciegas ante una instalación parcial. Los verificadores de 001 comprueban solo la primera fase; el verificador de 002 comprueba el conjunto final.
+
 **NO ejecutado aún en un servidor MariaDB ni en Hostinger.** No hay credenciales reales en este repositorio.
 
 ## Preparación en Hostinger
