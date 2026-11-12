@@ -1,0 +1,79 @@
+name: IQ Commerce - MariaDB schema QA
+on:
+  push:
+    branches: [lujoarabe]
+    paths:
+      - "backend/**"
+      - "database/**"
+      - ".github/workflows/backend-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mariadb-qa:
+    name: PHP lint + migración MariaDB 10.11
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: ci-root-temporary-only
+          MARIADB_DATABASE: iqcommerce_ci
+          MARIADB_USER: iqcommerce_ci
+          MARIADB_PASSWORD: ci-temporary-only
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validar PHP y extensión PDO MySQL
+        run: |
+          php -v
+          if ! php -m | grep -qi '^pdo_mysql$'; then
+            sudo apt-get update
+            sudo apt-get install -y php-mysql
+          fi
+          find backend database -type f -name '*.php' -print0 | xargs -0 -r -n 1 php -l
+
+      - name: Validación estática del esquema
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          sql = Path('database/migrations/001_initial.sql').read_text()
+          tables = re.findall(r'CREATE TABLE IF NOT EXISTS\s+([a-z_]+)', sql)
+          fks = re.findall(r'REFERENCES\s+([a-z_]+)\s*\(', sql)
+          assert len(tables) == 35, f'tables expected 35 got {len(tables)}'
+          assert len(fks) == 42, f'fks expected 42 got {len(fks)}'
+          assert all(t in tables for t in fks), 'unknown referenced table'
+          assert not re.search(r'\bDROP\s+TABLE\b', sql, re.I), 'destructive DDL'
+          assert '16.00' in sql and 'iva_price_mode' in sql, 'IVA config missing'
+          print('Schema static QA: 35 tables, 42 FKs, no DROP TABLE')
+          PY
+
+      - name: Aplicar migración en MariaDB temporal y comprobar
+        env:
+          IQ_APP_CONFIG: \${{ runner.temp }}/iqcommerce-ci-config.php
+        run: |
+          cat > "$IQ_APP_CONFIG" <<'PHP'
+          <?php
+          return [
+            'host' => '127.0.0.1',
+            'port' => 3306,
+            'database' => 'iqcommerce_ci',
+            'username' => 'iqcommerce_ci',
+            'password' => 'ci-temporary-only',
+          ];
+          PHP
+          php database/migrate.php "$IQ_APP_CONFIG"
+          php database/migrate.php "$IQ_APP_CONFIG"
+          php database/verify.php "$IQ_APP_CONFIG"
+          rm -f "$IQ_APP_CONFIG"
