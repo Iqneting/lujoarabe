@@ -1,5 +1,7 @@
 # LUJO ÁRABE · Maqueta HTML V1
 
+> **ESTADO VERIFICADO:** MariaDB 10.11 temporal **35 tablas, 42 claves foráneas, migración idempotente y 4 endpoints GET probados**. [Resultado QA](docs/QA_BACKEND_MARIADB_V1.md) · [Continuidad técnica para próximos hilos](docs/CONTINUIDAD_BACKEND_MARIADB_V1.md) · [GitHub Actions PASS](https://github.com/Iqneting/lujoarabe/actions/runs/43133797840). No supone instalación en Hostinger ni integración con el frontend.
+
 > **BASE DE DATOS / API EN PREPARACIÓN (11 nov 2026).** El nuevo modelo MariaDB de 35 tablas está en [database/migrations/001_initial.sql](database/migrations/001_initial.sql). [Arquitectura](docs/ARQUITECTURA_MARIADB_V1.md) · [Contratos de API](docs/CONTRATOS_API_V1.md) · [Instalación segura](database/README.md) · [Backend PHP de consulta](backend/README.md). **Todavía no hay conexión a Hostinger ni checkout real.** Se conserva V40, la tienda pública y main sin sustituirlos.
 
 **Rama de desarrollo:** `lujoarabe` · **Estado:** maqueta interactiva, no producción.
