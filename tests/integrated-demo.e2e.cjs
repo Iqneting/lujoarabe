@@ -79,6 +79,51 @@ const base='http://127.0.0.1:18765';
   const account=await store.evaluate(id=>window.IQCommerceDemo.get().orders.find(x=>x.id===id),orderId);
   assert.equal(account.status,'delivered');
   assert.equal(account.payment,'paid');
+
+  // Extensión de integración: configuración, cupón, categorías y contenido.
+  await panel.evaluate(()=>{
+   window.IQCommerceDemo.tx(d=>{
+    d.coupons.push({id:'C-TEST10',code:'PRUEBA10',percent:10,active:true,from:'2026-01-01',to:'2099-12-31',limit:2,used:0});
+    d.bank={name:'Banco de prueba',holder:'Prueba QA',clabe:'000000000000000000',active:true};
+    d.categories.push({id:'c-test',name:'Edición de prueba',active:true,icon:''});
+    d.content.push({id:'banner-test',type:'banner',title:'Campaña integrada',image:'/assets/media-01.jpg',active:true,order:1,link:''});
+    d.content.push({id:'carousel-test',type:'carousel',title:'Selección conectada',productIds:[d.products[0].id],active:true,order:1});
+   });
+  });
+  await store.goto(base+'/tienda-integrada/#/inicio',{waitUntil:'domcontentloaded'});
+  await store.waitForFunction(()=>document.body.textContent.includes('Campaña integrada')&&document.body.textContent.includes('Selección conectada'));
+  await store.goto(base+'/tienda-integrada/#/catalogo',{waitUntil:'domcontentloaded'});
+  assert(await store.locator('[data-action="genre"][data-val="category:c-test"]').count()>=1);
+  await store.evaluate(()=>{
+   S.shipping={nombre:'Cliente Cupón',correo:'cupon@example.test',telefono:'5551234567',cp:'06000',calle:'Calle test',colonia:'Centro',ciudad:'CDMX'};
+   S.cart=[{id:PRODUCTS[0].id,qty:1,size:PRODUCTS[0].presentacion,price:PRODUCTS[0].precio}];
+   S.step=2;S.shippingMethod='estandar';S.paymentMethod='transferencia';go('checkout');
+  });
+  assert(await store.locator('text=Banco de prueba').count()>0,'Los datos bancarios del panel deben aparecer en el pago');
+  await store.locator('#checkout-coupon').fill('PRUEBA10');
+  await store.locator('[data-action="applyCoupon"]').click();
+  const quote=await store.evaluate(()=>({data:checkoutQuote(),code:S.appliedCouponCode}));
+  assert.equal(quote.code,'PRUEBA10');
+  assert.equal(quote.data.discountTotal,Math.round(first.price*0.1*100)/100);
+  await store.locator('[data-action="placeOrder"]').click();
+  const couponOrder=await store.evaluate(()=>S.order?.number);
+  assert(couponOrder&&couponOrder!==orderId);
+  const discounted=await store.evaluate(id=>window.IQCommerceDemo.get().orders.find(x=>x.id===id),couponOrder);
+  assert.equal(discounted.discountTotal,quote.data.discountTotal);
+  assert.equal(discounted.total,quote.data.total);
+  assert.equal((await store.evaluate(()=>window.IQCommerceDemo.get().coupons.find(c=>c.id==='C-TEST10').used)),1);
+  const cancel=await store.evaluate(id=>window.IQCommerceDemo.tx(d=>window.IQCommerceDemo.cancelOrder(d,id)).value,couponOrder);
+  assert.equal(cancel.status,'cancelled');
+  assert.equal((await store.evaluate(()=>window.IQCommerceDemo.get().coupons.find(c=>c.id==='C-TEST10').used)),0,'Cancelar libera uso del cupón');
+  await store.setViewportSize({width:390,height:844});
+  await store.goto(base+'/tienda-integrada/#/catalogo',{waitUntil:'domcontentloaded'});
+  const storeOverflow=await store.evaluate(()=>({scroll:document.documentElement.scrollWidth,window:window.innerWidth}));
+  assert(storeOverflow.scroll<=storeOverflow.window+3,'Desbordamiento horizontal tienda: '+JSON.stringify(storeOverflow));
+  await panel.setViewportSize({width:390,height:844});
+  await panel.goto(base+'/prototipos/iq-commerce-pos/IQ_COMMERCE_POS_MAESTRO_V41.html#/pedidos',{waitUntil:'domcontentloaded'});
+  const panelOverflow=await panel.evaluate(()=>({scroll:document.documentElement.scrollWidth,window:window.innerWidth}));
+  assert(panelOverflow.scroll<=panelOverflow.window+3,'Desbordamiento horizontal panel: '+JSON.stringify(panelOverflow));
+
   assert.equal(errors.length,0,'Errores JavaScript: '+errors.join('; '));
   console.log('PASS E2E tienda -> pedido -> reserva -> comprobante -> pago -> envío -> entrega -> devolución -> recarga');
   await context.close();
