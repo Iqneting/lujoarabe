@@ -1,5 +1,7 @@
 # IQ Commerce POS — Panel Maestro universal
 
+> **ÚLTIMO AVANCE — V40 (11 nov 2026).** [HTML V40](./IQ_COMMERCE_POS_MAESTRO_V40.html) · [Continuidad V40](./CONTINUIDAD_V40.md) · [ZIP Android](https://github.com/Iqneting/lujoarabe/archive/refs/heads/descarga-v40.zip). En **Ajustes → IVA**, confirmar porcentaje con 16 % inicial, ajuste +/− y entrada editable, interruptor y guardado en navegador. Sin recálculo de precios/pedidos. V39 y anteriores intactas; **prototipo, sin despliegue productivo**.
+
 > **ÚLTIMO AVANCE — V39 (11 nov 2026).** [HTML V39](./IQ_COMMERCE_POS_MAESTRO_V39.html) · [Continuidad V39](./CONTINUIDAD_V39.md) · [ZIP Android](https://github.com/Iqneting/lujoarabe/archive/refs/heads/descarga-v39.zip). En **Ajustes → Configuración** se incorpora solo el interruptor IVA, con estado persistente Activado/Desactivado. No se cambian cálculos fiscales, precios, pedidos ni otras pantallas. Versiones anteriores intactas. **Prototipo; no producción.**
 
 > **ÚLTIMO AVANCE — V38 (11 nov 2026).** [HTML V38](./IQ_COMMERCE_POS_MAESTRO_V38.html) · [Continuidad V38](./CONTINUIDAD_V38.md) · [ZIP Android](https://github.com/Iqneting/lujoarabe/archive/refs/heads/descarga-v38.zip). Se añade «Iniciar devolución» desde **Pedidos → Ver pedido → Productos**, con pedido preseleccionado y selección posterior del producto; el atajo por producto permanece. V37 y todas las anteriores intactas. **Solo prototipo; no producción.**
