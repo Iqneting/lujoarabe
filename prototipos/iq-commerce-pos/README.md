@@ -1,5 +1,7 @@
 # IQ Commerce POS — Panel Maestro universal
 
+> **ÚLTIMA VERSIÓN PARA INTEGRACIÓN LOCAL: V41.** [Panel V41](./IQ_COMMERCE_POS_MAESTRO_V41.html) · [Tienda integrada](../../tienda-integrada/) · [Auditoría](../../docs/AUDITORIA_INTEGRACION_LOCAL_V41.md). Comparten datos bajo un único origen HTTP(S); V40 se mantiene congelada. [Prueba E2E PASS](https://github.com/Iqneting/lujoarabe/actions/runs/43147279942). Migración MariaDB 001+002 probada en CI (38 tablas, 44 relaciones); **no deploy ni backend de escritura**.
+
 > **SIGUIENTE ETAPA: arquitectura MariaDB y API PHP (11 nov 2026).** [Modelo y reglas](../../docs/ARQUITECTURA_MARIADB_V1.md) · [Esquema SQL](../../database/migrations/001_initial.sql) · [Contratos](../../docs/CONTRATOS_API_V1.md). El Maestro V40 queda como referencia aprobada e INTACTA. La API de lectura aún no está conectada al HTML ni probada en Hostinger; operaciones de escritura requieren auth, CSRF y transacciones.
 
 > **ÚLTIMO AVANCE — V40 (11 nov 2026).** [HTML V40](./IQ_COMMERCE_POS_MAESTRO_V40.html) · [Continuidad V40](./CONTINUIDAD_V40.md) · [ZIP Android](https://github.com/Iqneting/lujoarabe/archive/refs/heads/descarga-v40.zip). En **Ajustes → IVA**, confirmar porcentaje con 16 % inicial, ajuste +/− y entrada editable, interruptor y guardado en navegador. Sin recálculo de precios/pedidos. V39 y anteriores intactas; **prototipo, sin despliegue productivo**.
