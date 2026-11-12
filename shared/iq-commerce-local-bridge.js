@@ -17,7 +17,7 @@ function blank(seed){
  if(!Array.isArray(s.products))s.products=[];
  if(!Array.isArray(s.categories))s.categories=[];
  if(!Array.isArray(s.orders))s.orders=[];
- for(const key of ['returns','customers','coupons','content','operators','activity','inventoryMovements','stockReservations','payments'])if(!Array.isArray(s[key]))s[key]=[];
+ for(const key of ['returns','customers','coupons','content','operators','activity','inventoryMovements','stockReservations','payments','couponRedemptions','refunds','storeCredits','exchanges'])if(!Array.isArray(s[key]))s[key]=[];
  s.tax={ivaEnabled:false,ivaRate:16,...(s.tax||{})};
  s.bank={name:'',holder:'',clabe:'',active:false,...(s.bank||{})};
  s.shipping={standard:99,freeFrom:1500,carriers:['Paquetería nacional'],...(s.shipping||{})};
@@ -121,32 +121,70 @@ function priceItems(d,items){
  }
  return entries;
 }
+
+function couponFor(d,code,subtotalCents){
+ const value=String(code||'').trim().toUpperCase();
+ if(!value)return {coupon:null,discountCents:0};
+ const coupon=d.coupons.find(x=>String(x.code).trim().toUpperCase()===value);
+ if(!coupon||!coupon.active)fail('Cupón no disponible');
+ const today=new Date().toISOString().slice(0,10);
+ if(coupon.from&&today<String(coupon.from).slice(0,10))fail('El cupón aún no inicia');
+ if(coupon.to&&today>String(coupon.to).slice(0,10))fail('El cupón ya venció');
+ if(coupon.limit!==undefined&&coupon.limit!==null&&Number(coupon.used||0)>=Number(coupon.limit))fail('Cupón agotado');
+ const pct=Number(coupon.percent||0);
+ const credit=Number(coupon.credit||0);
+ if((!pct||pct<0)&&(!credit||credit<=0))fail('Cupón sin descuento válido');
+ if(pct>100||pct<0)fail('Porcentaje de cupón inválido');
+ const discountCents=pct>0?Math.round(subtotalCents*pct/100):Math.min(subtotalCents,cents(credit));
+ if(discountCents<0)fail('Descuento inválido');
+ return {coupon,discountCents};
+}
+function quoteOrder(d,inputs,shippingTotal=0,couponCode=''){
+ const items=priceItems(d,inputs);
+ const shipping=Number(shippingTotal);
+ if(!Number.isFinite(shipping)||shipping<0||shipping>100000)fail('Entrega no válida');
+ const subtotalCents=items.reduce((s,x)=>s+cents(x.subtotal),0);
+ const {coupon,discountCents}=couponFor(d,couponCode,subtotalCents);
+ let allocated=0;
+ for(let i=0;i<items.length;i++){
+  const line=items[i];
+  let discount=i===items.length-1?discountCents-allocated:Math.floor(discountCents*cents(line.subtotal)/subtotalCents);
+  discount=Math.max(0,Math.min(discount,cents(line.subtotal)));allocated+=discount;
+  const reduced=cents(line.subtotal)-discount,rate=d.tax.ivaEnabled?Number(d.tax.ivaRate):0;
+  const tax=rate>0?(d.tax.ivaPriceMode==='included'?reduced-Math.round(reduced/(1+rate/100)):Math.round(reduced*rate/100)):0;
+  line.discountTotal=discount/100;line.taxTotal=tax/100;
+  line.lineTotal=(reduced+(d.tax.ivaPriceMode==='added'?tax:0))/100;
+ }
+ const subtotal=subtotalCents/100,discountTotal=discountCents/100;
+ const taxTotal=round(items.reduce((s,i)=>s+i.taxTotal,0));
+ const total=round(items.reduce((s,i)=>s+i.lineTotal,0)+shipping);
+ return {items,subtotal,discountTotal,taxTotal,shippingTotal:shipping,total,coupon};
+}
 function createOrder(d,args){
  const name=String(args.customer?.name||'').trim();
  const email=String(args.customer?.email||'').trim().toLowerCase();
  if(!name||name.length>160)fail('Indica un nombre válido');
  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail('Correo no válido');
- const items=priceItems(d,args.items);
- const shipping=Number(args.shippingTotal||0);
- if(!Number.isFinite(shipping)||shipping<0||shipping>100000)fail('Entrega no válida');
- // Monto de entrega decidido por el simulador de la tienda, no por el navegador como fuente final en backend.
- const subtotal=round(items.reduce((s,i)=>s+i.subtotal,0));
- const taxTotal=round(items.reduce((s,i)=>s+i.taxTotal,0));
- const lineTotal=round(items.reduce((s,i)=>s+i.lineTotal,0));
- const total=round(lineTotal+shipping);
+ const quote=quoteOrder(d,args.items,args.shippingTotal||0,args.couponCode||'');
+ const {items,subtotal,discountTotal,taxTotal,shippingTotal,total,coupon}=quote;
  let c=email?d.customers.find(x=>String(x.email||'').toLowerCase()===email):null;
  if(!c){c={id:uid('C'),name,email,phone:String(args.customer.phone||''),createdAt:new Date().toISOString()};d.customers.push(c)}
  const o={id:uid('LA'),customerId:c.id,customer:name,customerEmail:email,
   date:new Date().toISOString(),status:'pending',payment:'pending',paymentMethod:args.paymentMethod||'transferencia',channel:args.channel||'storefront_demo',
-  items,subtotal,shippingTotal:shipping,discountTotal:0,taxTotal,total,
+  items,subtotal,shippingTotal,discountTotal,taxTotal,total,couponId:coupon?.id||null,couponCode:coupon?.code||null,
   ivaEnabledSnapshot:Boolean(d.tax.ivaEnabled),ivaRateSnapshot:d.tax.ivaEnabled?Number(d.tax.ivaRate):0,
   ivaPriceModeSnapshot:d.tax.ivaPriceMode||null,carrier:'',tracking:'',voucher:'',note:'',
   address:args.shipping||null,history:[{at:new Date().toISOString(),status:'pending'}]};
  d.orders.unshift(o);
  for(const it of items)d.stockReservations.push({id:uid('RES'),orderId:o.id,productId:it.productId,qty:it.qty,status:'held'});
+ if(coupon){
+  coupon.used=Number(coupon.used||0)+1;
+  d.couponRedemptions.push({id:uid('CPN'),couponId:coupon.id,orderId:o.id,amount:discountTotal,status:'held',at:new Date().toISOString()});
+ }
  d.activity.unshift({date:new Date().toISOString(),text:'Pedido local creado: '+o.id});d.activity=d.activity.slice(0,60);
  return o;
 }
+
 function confirmPayment(d,id){
  const o=d.orders.find(x=>x.id===id);
  if(!o||o.status!=='review'||o.payment!=='review'||!o.voucher)fail('Solo se puede verificar un comprobante pendiente de revisión');
@@ -173,6 +211,12 @@ function cancelOrder(d,id){
  if(!o||o.status==='cancelled'||o.status==='delivered')fail('El pedido no puede cancelarse en su estado actual');
  if(o.status==='shipped')fail('Una orden enviada requiere gestionar devolución, no cancelación simple');
  for(const r of d.stockReservations.filter(x=>x.orderId===id&&x.status==='held'))r.status='released';
+ if(o.couponId&&o.payment!=='paid'&&!o.couponReleased){
+  const coupon=d.coupons.find(x=>x.id===o.couponId);
+  if(coupon)coupon.used=Math.max(0,Number(coupon.used||0)-1);
+  d.couponRedemptions.filter(x=>x.orderId===id&&x.status==='held').forEach(x=>x.status='released');
+  o.couponReleased=true;
+ }
  o.status='cancelled';o.refundRequired=o.payment==='paid';
  o.history=[...(o.history||[]),{at:new Date().toISOString(),status:'cancelled'}];
  return o;
@@ -207,6 +251,11 @@ function deleteOrder(d,id){
  const o=d.orders.find(x=>x.id===id);
  if(!o||o.payment==='paid'||!['pending','review','cancelled'].includes(o.status)||d.returns.some(r=>r.orderId===id))fail('El pedido tiene pago, devolución o historial protegido; no puede eliminarse');
  for(const r of d.stockReservations.filter(x=>x.orderId===id))r.status='released';
+ if(o.couponId&&!o.couponReleased){
+  const coupon=d.coupons.find(x=>x.id===o.couponId);
+  if(coupon)coupon.used=Math.max(0,Number(coupon.used||0)-1);
+ }
+ d.couponRedemptions=d.couponRedemptions.filter(x=>x.orderId!==id);
  d.stockReservations=d.stockReservations.filter(x=>x.orderId!==id);
  d.orders=d.orders.filter(x=>x.id!==id);return o;
 }
@@ -235,6 +284,6 @@ function returnNext(d,id,next){
  if(next==='resolved')r.needsSettlement=true; // ningún reembolso bancario/vale se ejecuta aquí
  return r;
 }
-root.IQCommerceDemo={KEY,boot,get,commit,tx,audit,available,priceItems,createOrder,confirmPayment,
+root.IQCommerceDemo={KEY,boot,get,commit,tx,audit,available,priceItems,quoteOrder,createOrder,confirmPayment,
  cancelOrder,shipOrder,deliverOrder,rejectPayment,adjustStock,deleteOrder,createReturn,returnNext,uid};
 })(typeof window!=='undefined'?window:globalThis);
