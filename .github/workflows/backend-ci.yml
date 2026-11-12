@@ -5,6 +5,8 @@ on:
     paths:
       - "backend/**"
       - "database/**"
+      - "instalar/**"
+      - "tests/installer-web-smoke.sh"
       - ".github/workflows/backend-ci.yml"
   workflow_dispatch:
 
@@ -41,7 +43,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y php-mysql
           fi
-          find backend database -type f -name '*.php' -print0 | xargs -0 -r -n 1 php -l
+          find backend database instalar -type f -name '*.php' -print0 | xargs -0 -r -n 1 php -l
 
       - name: Validación estática del esquema
         run: |
@@ -97,3 +99,6 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' 'http://127.0.0.1:18080/api/v1/catalog/products?category_id=oops')" = "422"
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST 'http://127.0.0.1:18080/api/v1/catalog/products')" = "405"
           echo "HTTP smoke QA OK — solamente lectura"
+
+      - name: Instalar por navegador contra segunda MariaDB temporal
+        run: bash tests/installer-web-smoke.sh
