@@ -5,6 +5,7 @@
 **Rama de trabajo:** `lujoarabe`
 **Base:** V37, preservada sin cambios.
 **HTML:** [IQ_COMMERCE_POS_MAESTRO_V38.html](./IQ_COMMERCE_POS_MAESTRO_V38.html)
+**ZIP autónomo Android (un único HTML):** https://github.com/Iqneting/lujoarabe/archive/refs/heads/descarga-v38.zip
 
 ## Solicitud
 
